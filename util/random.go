@@ -1,0 +1,43 @@
+package util
+
+import (
+	"fmt"
+	"math/rand"
+	"strings"
+	"time"
+)
+
+const alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
+// generates a random integer between min and max
+func randFloats(min, max float64) float64 {
+	return min + rand.Float64()*(max-min)
+}
+// generate a random string of length n
+func RandomString(n int) string{
+	var sb strings.Builder
+
+	for i :=0 ; i < n; i++{
+		c := alphabet[rand.Intn(len(alphabet))]
+		sb.WriteByte(c)
+	}
+
+	return sb.String()
+}
+
+func RandomOwner() string{
+	return RandomString(6)
+}
+
+func RandomMoney() string{
+	return fmt.Sprintf("%.2f",randFloats(0,10000))
+}
+
+func RandomCurrency() string{
+	currencies := []string{"USD", "EUR", "CAD","TWD"}
+	return currencies[rand.Intn(len(currencies))]
+}
