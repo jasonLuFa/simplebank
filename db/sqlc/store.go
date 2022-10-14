@@ -98,7 +98,7 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 			Balance: fmt.Sprintf("%.2f",util.StringToFloat64(fromAccount.Balance) - util.StringToFloat64(arg.Amount)),
 		})
 		if err != nil {
-			return nil
+			return err
 		}
 
 		// -- toAccout
@@ -111,7 +111,7 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 			Balance: fmt.Sprintf("%.2f",util.StringToFloat64(toAccount.Balance) + util.StringToFloat64(arg.Amount)),
 		})
 		if err != nil {
-			return nil
+			return err
 		}
 
 
