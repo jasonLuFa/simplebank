@@ -56,7 +56,7 @@ type TransferTxResult struct{
 func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (TransferTxResult, error) {
 	var result TransferTxResult
 
-	store.execTx(ctx, func(q *Queries) error {
+	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
 		// transfer
 		result.Transfer, err = q.CreateTransfer(ctx,CreateTransferParams{
@@ -118,6 +118,6 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 		return nil
 	})
 
-	return result , nil
+	return result , err
 
 }

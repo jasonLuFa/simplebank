@@ -109,6 +109,6 @@ func TestTransferTx(t *testing.T) {
 
 		fmt.Println(">> after:", updatedAccount1.Balance, updatedAccount2.Balance)
 		
-		require.Equal(t, util.StringToFloat64(account1.Balance) - float64(n)*util.StringToFloat64(amount), updatedAccount1.Balance)
-		require.Equal(t, util.StringToFloat64(account2.Balance) + float64(n)*util.StringToFloat64(amount), updatedAccount2.Balance)
+		require.Equal(t, util.StringToFloat64(account1.Balance) - float64(n)*util.StringToFloat64(amount), util.StringToFloat64(updatedAccount1.Balance))
+		require.Equal(t, util.StringToFloat64(account2.Balance) + float64(n)*util.StringToFloat64(amount), util.StringToFloat64(updatedAccount2.Balance))
 }
