@@ -64,7 +64,6 @@ func TestUpdateAccount(t *testing.T){
 	require.Equal(t,account.Owner,accountUpdatting.Owner)
 	require.Equal(t,arg.Balance,accountUpdatting.Balance)
 	require.Equal(t,account.Currency,accountUpdatting.Currency)
-	require.WithinDuration(t,account.CreatedAt,accountUpdatting.CreatedAt,time.Second)
 }
 
 

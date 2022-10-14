@@ -3,6 +3,7 @@ package util
 import (
 	"fmt"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -34,7 +35,12 @@ func RandomOwner() string{
 }
 
 func RandomMoney() string{
-	return fmt.Sprintf("%.2f",randFloats(0,10000))
+	return fmt.Sprintf("%.2f",randFloats(1000,10000))
+}
+
+func StringToFloat64(s string) float64{
+	result,_ := strconv.ParseFloat(s, 64) 
+	return result
 }
 
 func RandomCurrency() string{
