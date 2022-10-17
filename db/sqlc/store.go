@@ -53,12 +53,18 @@ type TransferTxResult struct{
 	ToEntry Entry `json:"to_entry"`
 }
 
+var txKey = struct{}{}
+
 func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (TransferTxResult, error) {
 	var result TransferTxResult
 
 	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
+
+		txName := ctx.Value(txKey)
+
 		// transfer
+		fmt.Println(txName, "create transfer")
 		result.Transfer, err = q.CreateTransfer(ctx,CreateTransferParams{
 			FromAccountID: arg.FromAccountID,
 			ToAccountID: 	 arg.ToAccountID,
@@ -70,6 +76,7 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 
 		amount := util.StringToFloat64(arg.Amount)
 		// fromEntry
+		fmt.Println(txName, "create fromEntry")
 		result.FromEntry, err = q.CreateEntry(ctx,CreateEntryParams{
 			AccountID: arg.FromAccountID,
 			Amount: fmt.Sprintf("%.2f",-amount),
@@ -79,6 +86,7 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 		}
 
 		// toEntry
+		fmt.Println(txName, "create toEntry")
 		result.ToEntry, err = q.CreateEntry(ctx,CreateEntryParams{
 			AccountID: arg.ToAccountID,
 			Amount: fmt.Sprintf("%.2f",amount),
@@ -89,10 +97,12 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 
 		// update accounts' balance
 		// -- fromAccout
+		fmt.Println(txName, "get fromAccout")
 		fromAccount , err := q.GetAccountForUpdate(ctx, arg.FromAccountID)
 		if err != nil {
 			return err
 		}
+		fmt.Println(txName, "update fromAccout")
 		result.FromAccount, err = q.UpdateAccount(ctx, UpdateAccountParams{
 			ID: arg.FromAccountID,
 			Balance: fmt.Sprintf("%.2f",util.StringToFloat64(fromAccount.Balance) - util.StringToFloat64(arg.Amount)),
@@ -102,10 +112,12 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 		}
 
 		// -- toAccout
+		fmt.Println(txName, "get toAccout")
 		toAccount , err := q.GetAccountForUpdate(ctx, arg.ToAccountID)
 		if err != nil {
 			return err
 		}
+		fmt.Println(txName, "update toAccout")
 		result.ToAccount, err = q.UpdateAccount(ctx, UpdateAccountParams{
 			ID : arg.ToAccountID,
 			Balance: fmt.Sprintf("%.2f",util.StringToFloat64(toAccount.Balance) + util.StringToFloat64(arg.Amount)),
