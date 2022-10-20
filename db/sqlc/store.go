@@ -61,10 +61,10 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
 
-		txName := ctx.Value(txKey)
+		// txName := ctx.Value(txKey)
 
 		// transfer
-		fmt.Println(txName, "create transfer")
+		// fmt.Println(txName, "create transfer")
 		result.Transfer, err = q.CreateTransfer(ctx,CreateTransferParams{
 			FromAccountID: arg.FromAccountID,
 			ToAccountID: 	 arg.ToAccountID,
@@ -76,7 +76,7 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 
 		amount := util.StringToFloat64(arg.Amount)
 		// fromEntry
-		fmt.Println(txName, "create fromEntry")
+		// fmt.Println(txName, "create fromEntry")
 		result.FromEntry, err = q.CreateEntry(ctx,CreateEntryParams{
 			AccountID: arg.FromAccountID,
 			Amount: fmt.Sprintf("%.2f",-amount),
@@ -86,7 +86,7 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 		}
 
 		// toEntry
-		fmt.Println(txName, "create toEntry")
+		// fmt.Println(txName, "create toEntry")
 		result.ToEntry, err = q.CreateEntry(ctx,CreateEntryParams{
 			AccountID: arg.ToAccountID,
 			Amount: fmt.Sprintf("%.2f",amount),
@@ -96,40 +96,34 @@ func (store *Store) TransferTx(ctx context.Context,arg TransferTxParams) (Transf
 		}
 
 		// update accounts' balance
-		// -- fromAccout
-		fmt.Println(txName, "get fromAccout")
-		fromAccount , err := q.GetAccountForUpdate(ctx, arg.FromAccountID)
-		if err != nil {
-			return err
-		}
-		fmt.Println(txName, "update fromAccout")
-		result.FromAccount, err = q.UpdateAccount(ctx, UpdateAccountParams{
-			ID: arg.FromAccountID,
-			Balance: fmt.Sprintf("%.2f",util.StringToFloat64(fromAccount.Balance) - util.StringToFloat64(arg.Amount)),
-		})
-		if err != nil {
-			return err
+		if arg.FromAccountID < arg.ToAccountID {
+			result.FromAccount, result.ToAccount, err = addMoney(ctx, q, arg.FromAccountID, -amount, arg.ToAccountID,amount)
+		} else {
+			result.ToAccount, result.FromAccount, err = addMoney(ctx, q, arg.ToAccountID, amount, arg.FromAccountID, -amount)
 		}
 
-		// -- toAccout
-		fmt.Println(txName, "get toAccout")
-		toAccount , err := q.GetAccountForUpdate(ctx, arg.ToAccountID)
-		if err != nil {
-			return err
-		}
-		fmt.Println(txName, "update toAccout")
-		result.ToAccount, err = q.UpdateAccount(ctx, UpdateAccountParams{
-			ID : arg.ToAccountID,
-			Balance: fmt.Sprintf("%.2f",util.StringToFloat64(toAccount.Balance) + util.StringToFloat64(arg.Amount)),
-		})
-		if err != nil {
-			return err
-		}
-
-
-		return nil
+		return err
 	})
 
 	return result , err
 
+}
+
+func addMoney(ctx context.Context,q *Queries,accountID1 int64,amount1 float64, accountID2 int64,amount2 float64) (account1 Account,account2 Account,err error) {
+	account1, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+		ID : accountID1,
+		Amount: fmt.Sprintf("%.2f",amount1),
+	})
+	if err != nil {
+		return 
+	}
+
+	account2, err = q.AddAccountBalance(ctx, AddAccountBalanceParams{
+		ID: accountID2,
+		Amount: fmt.Sprintf("%.2f",amount2),
+	})
+	if err != nil {
+		return 
+	}
+	return
 }
