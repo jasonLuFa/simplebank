@@ -11,7 +11,7 @@ import (
 
 type CreateAccountRequest struct {
 	Owner    string `json:"owner" binding:"required"`
-	Currency string `json:"currency" binding:"required,oneof=USD EUR"`
+	Currency string `json:"currency" binding:"required,currency"`
 }
 
 func (server *Server) createAccount(ctx *gin.Context){
@@ -47,18 +47,18 @@ func (server *Server) getAccount(ctx *gin.Context){
 		return
 	}
 
-	account,err:= server.store.GetAccount(ctx, req.ID)
-	if err != nil {
-		if err ==sql.ErrNoRows{
-			ctx.JSON(http.StatusNotFound,errorResponse(err))
-			return
-		}
-
-		ctx.JSON(http.StatusInternalServerError,errorResponse(err))
+	account,err := server.store.GetAccount(ctx, req.ID)
+	if err == nil {
+		ctx.JSON(http.StatusOK,account)
+		return
+	}
+	
+	if err == sql.ErrNoRows{
+		ctx.JSON(http.StatusNotFound,errorResponse(err))
 		return
 	}
 
-	ctx.JSON(http.StatusOK,account)
+	ctx.JSON(http.StatusInternalServerError,errorResponse(err))
 }
 
 type listAccountsRequest struct{
@@ -110,9 +110,9 @@ func (server *Server) deleteAccount(ctx *gin.Context) {
 	})
 }
 
-// 這邊 balance 因為是 string ，所以要另外判斷是否轉成換換成 float64 時，是否為 < 0
+
 type updateAccountRequest struct{
-	Balance string `json:"balance" binding:"required"`
+	Balance string `json:"balance" binding:"required,validAmount"`
 }
 
 func (server *Server) updateAccount(ctx *gin.Context) {

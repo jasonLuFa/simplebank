@@ -14,6 +14,10 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+func RandomInt(min, max int64) int64 {
+	return min + rand.Int63n(max-min+1)
+}
+
 // generates a random integer between min and max
 func randFloats(min, max float64) float64 {
 	return min + rand.Float64()*(max-min)
@@ -44,6 +48,6 @@ func StringToFloat64(s string) float64{
 }
 
 func RandomCurrency() string{
-	currencies := []string{"USD", "EUR", "CAD","TWD"}
+	currencies := []string{USD, EUR, CAD}
 	return currencies[rand.Intn(len(currencies))]
 }
