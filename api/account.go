@@ -2,16 +2,17 @@ package api
 
 import (
 	"database/sql"
+	"errors"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	db "github.com/jasonLuFa/simplebank/db/sqlc"
+	"github.com/jasonLuFa/simplebank/token"
 	"github.com/lib/pq"
 )
 
 type CreateAccountRequest struct {
-	Owner    string `json:"owner" binding:"required"`
 	Currency string `json:"currency" binding:"required,currency"`
 }
 
@@ -22,8 +23,9 @@ func (server *Server) createAccount(ctx *gin.Context){
 		return
 	}
 
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 	arg := db.CreateAccountParams{
-		Owner: req.Owner,
+		Owner: authPayload.Username,
 		Currency: req.Currency,
 		Balance: "0",
 	}
@@ -50,6 +52,7 @@ type getAccountRequest struct{
 }
 
 func (server *Server) getAccount(ctx *gin.Context){
+
 	var req getAccountRequest
 	if err := ctx.ShouldBindUri(&req); err != nil{
 		ctx.JSON(http.StatusBadRequest,errorResponse(err))
@@ -64,6 +67,13 @@ func (server *Server) getAccount(ctx *gin.Context){
 	
 	if err == sql.ErrNoRows{
 		ctx.JSON(http.StatusNotFound,errorResponse(err))
+		return
+	}
+
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if account.Owner != authPayload.Username {
+		err := errors.New("account doesn't belong to the authenticated user")
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
 		return
 	}
 
@@ -82,7 +92,9 @@ func (server *Server) listAccounts(ctx *gin.Context) {
 		return
 	}
 
+	authPayload := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
 	arg := db.ListAccountsParams{
+		Owner: authPayload.Username,
 		Limit: req.PageSize, 
 		Offset: (req.PageID -1) * req.PageSize,
 	}
@@ -102,14 +114,23 @@ type deleteAccountRequest struct{
 }
 
 func (server *Server) deleteAccount(ctx *gin.Context) {
+	_, ok := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if !ok {
+		err := errors.New("there is no access token")
+		ctx.JSON(http.StatusBadRequest,errorResponse(err))
+		return
+	}
+
 	var req deleteAccountRequest
 	if err:= ctx.ShouldBindUri(&req); err != nil{
 		ctx.JSON(http.StatusBadRequest,errorResponse(err))
 		return
 	}
 
+
 	err := server.store.DeleteAccount(ctx,req.ID)
 	if err != nil {
+		
 		ctx.JSON(http.StatusInternalServerError,errorResponse(err))
 		return
 	}
@@ -125,6 +146,13 @@ type updateAccountRequest struct{
 }
 
 func (server *Server) updateAccount(ctx *gin.Context) {
+	_, ok := ctx.MustGet(authorizationPayloadKey).(*token.Payload)
+	if !ok {
+		err := errors.New("there is no access token")
+		ctx.JSON(http.StatusBadRequest,errorResponse(err))
+		return
+	}
+
 	var req updateAccountRequest
 	id,err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil || id <= 0 {
