@@ -77,7 +77,7 @@ func TestAuthMiddleware(t *testing.T) {
 	for i := range testcase{
 		tc := testcase[i]
 		t.Run(tc.name, func(t *testing.T) {
-			server := NewTestServer(t, nil)
+			server := newTestServer(t, nil)
 
 			authTestingPath := "/authTest"
 			server.router.GET(authTestingPath,

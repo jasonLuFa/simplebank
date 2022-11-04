@@ -11,7 +11,6 @@ import (
 type Store interface{
 	Querier
 	TransferTx(context.Context, TransferTxParams) (TransferTxResult, error)
-	// execTx(ctx context.Context,fn func(*Queries) error) error
 }
 
 // SQLStore provides all functions to execute db queries and transactions
