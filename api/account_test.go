@@ -26,14 +26,14 @@ func TestGetAccountAPI(t *testing.T) {
 
 	testCases := []struct {
 		name string
-		accounID int64
+		accountID int64
 		buildStubs func(store *mockdb.MockStore)
 		setupAuth func(t *testing.T, req *http.Request, tokenMaker token.Maker)
 		checkResponse func(t *testing.T, recorder *httptest.ResponseRecorder)
 	}{
 		{
 			name: "OK",
-			accounID: account.ID,
+			accountID: account.ID,
 			setupAuth: func(t *testing.T, req *http.Request, tokenMaker token.Maker){
 				addAuthorization(t,req,tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
 			},
@@ -46,13 +46,43 @@ func TestGetAccountAPI(t *testing.T) {
 			},
 		},
 		{
-			name: "NotFound",
-			accounID: account.ID,
-			buildStubs: func(store *mockdb.MockStore){
-				store.EXPECT().GetAccount(gomock.Any(),gomock.Eq(account.ID)).Times(1).Return(db.Account{},sql.ErrNoRows)
+			name:      "UnauthorizedUser",
+			accountID: account.ID,
+			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
+				addAuthorization(t, request, tokenMaker, authorizationTypeBearer, "unauthorized_user", time.Minute)
 			},
+			buildStubs: func(store *mockdb.MockStore) {
+				store.EXPECT().
+					GetAccount(gomock.Any(), gomock.Eq(account.ID)).
+					Times(1).
+					Return(account, nil)
+			},
+			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusUnauthorized, recorder.Code)
+			},
+		},
+		{
+			name:      "NoAuthorization",
+			accountID: account.ID,
+			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
+			},
+			buildStubs: func(store *mockdb.MockStore) {
+				store.EXPECT().
+					GetAccount(gomock.Any(), gomock.Any()).
+					Times(0)
+			},
+			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusUnauthorized, recorder.Code)
+			},
+		},
+		{
+			name: "NotFound",
+			accountID: account.ID,
 			setupAuth: func(t *testing.T, req *http.Request, tokenMaker token.Maker){
 				addAuthorization(t,req,tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
+			},
+			buildStubs: func(store *mockdb.MockStore){
+				store.EXPECT().GetAccount(gomock.Any(),gomock.Eq(account.ID)).Times(1).Return(db.Account{},sql.ErrNoRows)
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder){
 				require.Equal(t, http.StatusNotFound,recorder.Code)
@@ -60,12 +90,12 @@ func TestGetAccountAPI(t *testing.T) {
 		},
 		{
 			name: "InternalError",
-			accounID: account.ID,
-			buildStubs: func(store *mockdb.MockStore){
-				store.EXPECT().GetAccount(gomock.Any(),gomock.Eq(account.ID)).Times(1).Return(db.Account{},sql.ErrConnDone)
-			},
+			accountID: account.ID,
 			setupAuth: func(t *testing.T, req *http.Request, tokenMaker token.Maker){
 				addAuthorization(t,req,tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
+			},
+			buildStubs: func(store *mockdb.MockStore){
+				store.EXPECT().GetAccount(gomock.Any(),gomock.Eq(account.ID)).Times(1).Return(db.Account{},sql.ErrConnDone)
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder){
 				require.Equal(t, http.StatusInternalServerError,recorder.Code)
@@ -73,12 +103,12 @@ func TestGetAccountAPI(t *testing.T) {
 		},
 		{
 			name: "InvalidID",
-			accounID: 0,
-			buildStubs: func(store *mockdb.MockStore){
-				store.EXPECT().GetAccount(gomock.Any(),gomock.Any()).Times(0)
-			},
+			accountID: 0,
 			setupAuth: func(t *testing.T, req *http.Request, tokenMaker token.Maker){
 				addAuthorization(t,req,tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
+			},
+			buildStubs: func(store *mockdb.MockStore){
+				store.EXPECT().GetAccount(gomock.Any(),gomock.Any()).Times(0)
 			},
 			checkResponse: func(t *testing.T, recorder *httptest.ResponseRecorder){
 				require.Equal(t, http.StatusBadRequest,recorder.Code)
@@ -100,7 +130,7 @@ func TestGetAccountAPI(t *testing.T) {
 			server := NewTestServer(t,store)
 			recorder := httptest.NewRecorder()
 			
-			url :=  fmt.Sprintf("/accounts/%d",tc.accounID)
+			url :=  fmt.Sprintf("/accounts/%d",tc.accountID)
 			request, err := http.NewRequest(http.MethodGet,url,nil)
 			require.NoError(t,err)
 			
@@ -138,6 +168,56 @@ func TestCreateAccountAPI(t *testing.T) {
 				}
 
 				store.EXPECT().CreateAccount(gomock.Any(),gomock.Eq(arg)).Times(1).Return(account,nil)
+			},			
+			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusOK, recorder.Code)
+				requireBodyMatchAccount(t, recorder.Body, account)
+			},
+		},
+		{
+			name: "NoAuthorization",
+			body: gin.H{
+				"currency": account.Currency,
+			},
+			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
+			},
+			buildStubs: func(store *mockdb.MockStore) {
+				store.EXPECT().
+					CreateAccount(gomock.Any(), gomock.Any()).
+					Times(0)
+			},
+			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusUnauthorized, recorder.Code)
+			},
+		},
+		{
+			name: "InternalError",
+			body: gin.H{
+				"currency": account.Currency,
+			},
+			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
+				addAuthorization(t, request, tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
+			},
+			buildStubs: func(store *mockdb.MockStore) {
+				store.EXPECT().CreateAccount(gomock.Any(), gomock.Any()).Times(1).Return(db.Account{}, sql.ErrConnDone)
+			},
+			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusInternalServerError, recorder.Code)
+			},
+		},
+		{
+			name: "InvalidCurrency",
+			body: gin.H{
+				"currency": "invalid",
+			},
+			setupAuth: func(t *testing.T, request *http.Request, tokenMaker token.Maker) {
+				addAuthorization(t, request, tokenMaker, authorizationTypeBearer, user.Username, time.Minute)
+			},
+			buildStubs: func(store *mockdb.MockStore) {
+				store.EXPECT().CreateAccount(gomock.Any(), gomock.Any()).Times(0)
+			},
+			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				require.Equal(t, http.StatusBadRequest, recorder.Code)
 			},
 		},
 	}
