@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=simple_bank
+  api:
+    build:
+      context: . # means the current root folder
+      dockerfile: Dockerfile # in this case find the Dockerfile in the root folder
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_SOURCE=postgresql://admin:admin@postgres:5433/simple_bank?sslmode=disable
