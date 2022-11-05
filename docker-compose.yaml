@@ -6,6 +6,8 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DB=simple_bank
+    ports:
+      - "5433:5432"
   api:
     build:
       context: . # means the current root folder
