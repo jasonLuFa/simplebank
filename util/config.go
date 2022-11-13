@@ -20,7 +20,7 @@ func LoadConfig(path string) (config Config, err error) {
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
 
-	// 讓 make server SERVER_ADDRESS=0.0.0.0:8081 指令的 8081 ports 可 override 原預設 8080 ports
+	// 範例 : 當開 server (`make server SERVER_ADDRESS=0.0.0.0:8081`) 時，指令的 8081 ports 可 override 原預設 8080 ports
 	viper.AutomaticEnv()
 
 	err = viper.ReadInConfig()
