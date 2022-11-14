@@ -9,17 +9,17 @@
   - [strechter/testify](https://github.com/stretchr/testify) to write a unit test
 
 ## 📋 Content
-  - [DataBase](https://github.com/jasonLuFa/simplebank/edit/master/README.md#-database)
-    - [postgres](https://github.com/jasonLuFa/simplebank/edit/master/README.md#%EF%B8%8F-create-a-postgres-instance)
-    - [Concept of DB transaction](https://github.com/jasonLuFa/simplebank/edit/master/README.md#%EF%B8%8F-concept-of-db-transaction)
-    - [transaction isolation level](https://github.com/jasonLuFa/simplebank/edit/master/README.md#%EF%B8%8F-transaction-isolation-level)
-  - [Makefile](https://github.com/jasonLuFa/simplebank/edit/master/README.md#%EF%B8%8F-makefile)
-  - [golang migrate](https://github.com/jasonLuFa/simplebank/edit/master/README.md#-golang-migrate)
-  - [Sqlc](https://github.com/jasonLuFa/simplebank/edit/master/README.md#-sqlc)
-  - [Github Action](https://github.com/jasonLuFa/simplebank/edit/master/README.md#-github-action)
-  - [PASETO vs JWT](github.com/o1egl/paseto)
-  - [Dockerfile](https://github.com/jasonLuFa/simplebank/edit/master/README.md#dockerfile)
-  - [Docker compose](https://github.com/jasonLuFa/simplebank/edit/master/README.md#docker-compose)
+  - [DataBase](https://github.com/jasonLuFa/simplebank#-database)
+    - [postgres](https://github.com/jasonLuFa/simplebank#%EF%B8%8F-create-a-postgres-instance)
+    - [Concept of DB transaction](https://github.com/jasonLuFa/simplebank#%EF%B8%8F-concept-of-db-transaction)
+    - [transaction isolation level](https://github.com/jasonLuFa/simplebank#%EF%B8%8F-transaction-isolation-level)
+  - [Makefile](https://github.com/jasonLuFa/simplebank#%EF%B8%8F-makefile)
+  - [golang migrate](https://github.com/jasonLuFa/simplebank#-golang-migrate)
+  - [Sqlc](https://github.com/jasonLuFa/simplebank#-sqlc)
+  - [Github Action](https://github.com/jasonLuFa/simplebank#-github-action)
+  - [PASETO vs JWT](https://github.com/jasonLuFa/simplebank#-paseto-vs-jwt)
+  - [Dockerfile](https://github.com/jasonLuFa/simplebank#dockerfile)
+  - [Docker compose](https://github.com/jasonLuFa/simplebank#docker-compose)
 
    
 
