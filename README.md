@@ -231,6 +231,7 @@
 	- `--network <network name>` : 加到指定 network，否則會到預設的 bridge network
 		- 使用 bridge network 只能用 ip:port 做連線，ip 可從 `docker network inspect bridge` 去看指定 container 的 ip ( 會是 127.x.x.x  )
 		- 使用自訂 network 可以用 container name 作為 ip:port
+	- `-e <env var key=env var value> <image name>` : 輸入 container 所需的環境變數 ( ex : -e POSTGRES_PASSWORD=secret )
 - `docker network ls` : list all docker network
 - `docker network inspect <network name>` : inspect specific docker network
 - `docker network create <network_name>` : create a custom network ( 原 bridge 的 network 無法用 container name 連線只能用 IP )
