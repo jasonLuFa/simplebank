@@ -201,8 +201,10 @@
 ### [常用指令](https://github.com/golang-migrate/migrate/tree/master/cmd/migrate#usage)
 
 - `create [-ext E] [-dir D] [-seq] [-digits N] [-format] NAME`
-- `migrate up {N}`
-- `migrate down {N}`
+- `migrate up` : migrate up all pending migration
+- `migrate up {N}` : migrate up N pending migration
+- `migrate down` : migrate down all version
+- `migrate down {N}` : migrate down N version base on the current version
 
 ### 範例
 
