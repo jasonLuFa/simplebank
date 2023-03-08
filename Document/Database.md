@@ -2,8 +2,6 @@
 
 ## ✏️ Create a Postgres docker instance
 
-![ERD](https://github.com/jasonLuFa/simplebank/blob/master/simlebank_dbdiagram.png)
-
 - run postgres in docker container
   1. pull postgres image : `docker pull <image_name>`
      - ex : `docker pull postgres:12-alpine`
