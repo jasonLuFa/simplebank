@@ -10,7 +10,10 @@
 
 ## 範例
 
-1. `mkdir -p db/migration`
-2. `migrate create -ext sql -dir db/migration -seq init_schema`
-   - 會在 db/migration 下自動生成兩個檔案 000001_init_schema.down.sql 和 000001_init_schema.sql
-3. 使用 `migrate -path db/migration -database "postgresql://admin:admin@localhost:5433/simple_bank?sslmode=disable" -verbose up` 可執行 000001_init_schema.up.sql 此檔案裡的所有 sql 指令，`migrate -path db/migration -database "postgresql://admin:admin@localhost:5433/simple_bank?sslmode=disable" -verbose down` 則執行 000001_init_schema.down.sql 此檔案裡的所有 sql 指令 ( 這兩個指令也可寫在 Makefile 裡 )
+1. `mkdir -p db/migration` :
+2. `migrate -help` :
+3. `migrate create -ext sql -dir db/migration -seq init_schema` : 會在 db/migration 下自動生成兩個檔案 000001_init_schema.down.sql 和 000001_init_schema.sql
+4. `migrate -path db/migration -database "postgresql://admin:admin@localhost:5433/simple_bank?sslmode=disable" -verbose up`  : 可執行 000001_init_schema.up.sql 此檔案裡的所有 sql 指令，
+   - postgres container doesn't enable SSL by defaule, so we need to disable sslmode
+- `migrate -path db/migration -database "postgresql://admin:admin@localhost:5433/simple_bank?sslmode=disable" -verbose down` : 則執行 000001_init_schema.down.sql 此檔案裡的所有 sql 指令 
+- ( 常用指令都可寫在 [Makefile](https://github.com/jasonLuFa/simplebank/blob/master/Document/Makefile.md) 裡 )
