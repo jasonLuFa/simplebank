@@ -1,26 +1,26 @@
 # 💾 DataBase
 
-## ✏️ Create a Postgres docker instance
-
-- run postgres in docker container
-  1. pull postgres image : `docker pull <image_name>`
-     - ex : `docker pull postgres:12-alpine`
-  2. start a postgres instance : `docker run --name <container_name> -e POSTGRES_USER=<user_name> -e POSTGRES_PASSWORD=<user_password> -p <host_posts>:<container_ports_in_docker_network> -d <image_name>`
-     - ex : `docker run --name postgres12 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -p 5433:5432 -d postgres:12-alpine`
-     - `-e` : 設定 container 的環境變數
-     - `-d` : 將 contanier 在背景運行( datach mode )
-     - `-p <host_posts>:<container_ports_in_docker_network>` : mapping port 通常 docker container 是運行在不同的虛擬網路( virtual network )，而非我們的本機網路( local network )，所以我們須建立兩者間的連線橋梁( bridge )
-       - 5432 is the port inside the docker network
-       - 5433 is the port you use on your host machine to connect to the port inside the docker network
-  3. `docker ps` : list the current running container
-     - `-a` : list all container stop or running
-  4. exec psql in container : `docker exec -it <container_name> <command>`
-     - ex : `docker exec -it postgres12 psql -U admin`
-       - psql : command in docker to access the Postgres console
-       - -U {username} : connect to the {user name} user
-       - NOTE : The PostgreSQL image sets up trust authentication locally so you may notice a password is not required when connecting from localhost (inside the same container). However, a password will be required if connecting from a different host/container
-  5. log container info : `docker logs <container_name/container_ID>`
-     - ex : `docker logs postgres12`
+## ✏️ Create a Postgres in docker container
+### :one: Pull postgres image : `docker pull <image_name>`
+- ex : `docker pull postgres:12-alpine`
+### 2️⃣ Start a postgres instance : `docker run --name <container_name> -e POSTGRES_USER=<user_name> -e POSTGRES_PASSWORD=<user_password> -p <host_posts>:<container_ports_in_docker_network> -d <image_name>`
+ - ex : `docker run --name postgres12 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -p 5433:5432 -d postgres:12-alpine`
+   - `-e` : 設定 container 的環境變數
+   - `-d` : 將 contanier 在背景運行( datach mode )
+   - `-p <host_posts>:<container_ports_in_docker_network>` : mapping port 通常 docker container 是運行在不同的虛擬網路( virtual network )，而非我們的本機網路( local network )，所以我們須建立兩者間的連線橋梁( bridge )
+   - 5432 is the port inside the docker network
+   - 5433 is the port you use on your host machine to connect to the port inside the docker network
+### 3️⃣ List the current running container : `docker ps`
+- `-a` : list all container stop or running
+### 4️⃣ Exec psql in container : `docker exec -it <container_name> <command>`
+ - ex : `docker exec -it postgres12 psql -U admin`
+   - `psql` : command in docker to access the Postgres console
+   - `-U` <username> : connect to the {user name} user
+   - NOTE : The PostgreSQL image sets up trust authentication locally so you may notice a password is not required when connecting from localhost (inside the same container). However, a password will be required if connecting from a different host/container
+### 5️⃣ Log container info : `docker logs <container_name/container_ID>`
+- ex : `docker logs -f --tail=50 postgres12`
+  - `-f` : 持續印 log
+  - `--tail=50` : 最後五筆
 
 ## ✏️ Concept of DB Transaction
 
