@@ -12,12 +12,12 @@
 ## 📋 Content
 
 - [DataBase](https://github.com/jasonLuFa/simplebank/blob/master/Document/Database.md)
-  - [create a postgres docker instance](https://github.com/jasonLuFa/simplebank/blob/master/Document/Database.md#%EF%B8%8F-create-a-postgres-docker-instance)
+  - [Create a Postgres in docker container](https://github.com/jasonLuFa/simplebank/blob/master/Document/Database.md#%EF%B8%8F-create-a-postgres-docker-instance)
   - [Concept of DB transaction](https://github.com/jasonLuFa/simplebank/blob/master/Document/Database.md#%EF%B8%8F-concept-of-db-transaction)
   - [transaction isolation level](https://github.com/jasonLuFa/simplebank/blob/master/Document/Database.md#%EF%B8%8F-transaction-isolation-level)
 - [Makefile](https://github.com/jasonLuFa/simplebank/blob/master/Document/Makefile.md)
 - [golang migrate](https://github.com/jasonLuFa/simplebank/blob/master/Document/golang-migrate.md)
-- [Sqlc](https://github.com/jasonLuFa/simplebank/blob/master/Document/sqlc.md)
+- [Query DB in golang (sqlc)](https://github.com/jasonLuFa/simplebank/blob/master/Document/sqlc.md)
 - [Github Action](https://github.com/jasonLuFa/simplebank/blob/master/Document/Github-Action.md)
 - [PASETO vs JWT](https://github.com/jasonLuFa/simplebank/blob/master/Document/PASETO-VS-JWT.md)
 - [Dockerfile](https://github.com/jasonLuFa/simplebank/blob/master/Document/Dockerfile.md)
