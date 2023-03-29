@@ -48,6 +48,8 @@
   - 所以我們想 lock 住資料表，一次只給一個 transaction 做 _Update_
 
 - deadlock 的發生情況 : 當兩個 transaction 都在互等對方時
+- SELECT FOR UPDATE 是處理 race condition 的問題，但是某些情況會造成 deadlock，此時就需要 SELECT FOR NO KEY UPDATE ( 鎖的關聯性較弱 )，他會避免此資料表 A 的 primary key 被關聯成資料表 B 的 foreign key 時，不會因為資料表 B 有修改資料表的操作，而鎖住資料表 A 不能 SELECT，但是如果使用 SELECT FOR UPDATE 就會被鎖住
+
 
 ### Lock 種類
 
