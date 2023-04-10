@@ -22,6 +22,7 @@
 - [PASETO vs JWT](https://github.com/jasonLuFa/simplebank/blob/master/Document/PASETO-VS-JWT.md)
 - [Dockerfile](https://github.com/jasonLuFa/simplebank/blob/master/Document/Dockerfile.md)
 - [Docker compose](https://github.com/jasonLuFa/simplebank/blob/master/Document/Docker-compose.md)
+- [Testing](https://github.com/jasonLuFa/simplebank/blob/master/Document/Testing.md)
 
 ## :world_map: Design outline
 ![ERD](https://github.com/jasonLuFa/simplebank/blob/master/simlebank_dbdiagram.png)
