@@ -44,6 +44,8 @@ func TestGetAccountAPT(t *testing.T){
 	
 	// build stubs
 	store.EXPECT().
+	// 第一個參數是 ctx，所以我們不用任何 matcher，但我們要驗證第二個參數，所以用 gomock.Eq
+	// 如過要客製化 Matcher 必須實作，Matcher interface 裡的 String(), Matches 方法
 		GETAccount(gomock.Any(), gomock.Eq(account.ID)).
 		Times(1).
 		Return(account, nil)
