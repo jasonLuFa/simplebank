@@ -15,6 +15,7 @@
   - [Create a Postgres in docker container](https://github.com/jasonLuFa/simplebank/blob/master/Document/Database.md#%EF%B8%8F-create-a-postgres-docker-instance)
   - [Concept of DB transaction](https://github.com/jasonLuFa/simplebank/blob/master/Document/Database.md#%EF%B8%8F-concept-of-db-transaction)
   - [transaction isolation level](https://github.com/jasonLuFa/simplebank/blob/master/Document/Database.md#%EF%B8%8F-transaction-isolation-level)
+  - [Store password](https://github.com/jasonLuFa/simplebank/blob/master/Document/Store-password.md)
 - [Makefile](https://github.com/jasonLuFa/simplebank/blob/master/Document/Makefile.md)
 - [golang migrate](https://github.com/jasonLuFa/simplebank/blob/master/Document/golang-migrate.md)
 - [Query DB in golang (sqlc)](https://github.com/jasonLuFa/simplebank/blob/master/Document/sqlc.md)
