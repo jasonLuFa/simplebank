@@ -2,7 +2,6 @@ package token
 
 import (
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/aead/chacha20poly1305"
@@ -40,7 +39,6 @@ func (maker *PasetoMaker) VerifyToken(tokenString string) (*Payload, error) {
 
 	err := maker.paseto.Decrypt(tokenString, maker.symmetricKey, payload, nil)
 	if err != nil {
-		log.Println("21321421421412")
 		return nil, err
 	}
 
