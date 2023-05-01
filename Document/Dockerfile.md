@@ -9,7 +9,7 @@
   - `-e <env var key=env var value> <image name>` : 輸入 container 所需的環境變數 ( ex : -e POSTGRES_PASSWORD=secret )
 - `docker network ls` : list all docker network
 - `docker network inspect <network name>` : inspect specific docker network
-- `docker network create <network_name>` : create a custom network ( 如 container 在相同 network 可以用 container name 連線，否則原 bridge 的 network 連線只能用 IP )
+- `docker network create <network_name>` : create a custom network ( 如 container 在相同 network 可以用 container name 連線，否則原名稱為 bridge 的 network 連線只能用 IP )
 - `docker network connect <network name> <container name>` : 將 container 加到指定 network
 
 ## ✏️ use multistage to reduce the size of docker image size
