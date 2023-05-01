@@ -22,7 +22,7 @@
   - [Testing](https://github.com/jasonLuFa/simplebank/blob/master/Document/Testing.md)
 - grpc
   - [介紹](https://github.com/jasonLuFa/simplebank/blob/master/Document/grpc.md)
-  - [proto 生成 go code](https://github.com/jasonLuFa/simplebank/new/master/Document/proto.md)
+  - [proto 生成 go code](https://github.com/jasonLuFa/simplebank/blob/master/Document/proto.md)
 - DevOps
   - [Github Action](https://github.com/jasonLuFa/simplebank/blob/master/Document/Github-Action.md)
   - [Dockerfile](https://github.com/jasonLuFa/simplebank/blob/master/Document/Dockerfile.md)
