@@ -16,14 +16,20 @@
   - [Concept of DB transaction](https://github.com/jasonLuFa/simplebank/blob/master/Document/Database.md#%EF%B8%8F-concept-of-db-transaction)
   - [transaction isolation level](https://github.com/jasonLuFa/simplebank/blob/master/Document/Database.md#%EF%B8%8F-transaction-isolation-level)
   - [Store password](https://github.com/jasonLuFa/simplebank/blob/master/Document/Store-password.md)
-- [Makefile](https://github.com/jasonLuFa/simplebank/blob/master/Document/Makefile.md)
-- [golang migrate](https://github.com/jasonLuFa/simplebank/blob/master/Document/golang-migrate.md)
-- [Query DB in golang (sqlc)](https://github.com/jasonLuFa/simplebank/blob/master/Document/sqlc.md)
-- [Github Action](https://github.com/jasonLuFa/simplebank/blob/master/Document/Github-Action.md)
-- [PASETO vs JWT](https://github.com/jasonLuFa/simplebank/blob/master/Document/PASETO-VS-JWT.md)
-- [Dockerfile](https://github.com/jasonLuFa/simplebank/blob/master/Document/Dockerfile.md)
-- [Docker compose](https://github.com/jasonLuFa/simplebank/blob/master/Document/Docker-compose.md)
-- [Testing](https://github.com/jasonLuFa/simplebank/blob/master/Document/Testing.md)
+- golang
+  - [golang migrate](https://github.com/jasonLuFa/simplebank/blob/master/Document/golang-migrate.md) 
+  - [Query DB (sqlc)](https://github.com/jasonLuFa/simplebank/blob/master/Document/sqlc.md)
+  - [Testing](https://github.com/jasonLuFa/simplebank/blob/master/Document/Testing.md)
+- grpc
+  - [介紹](https://github.com/jasonLuFa/simplebank/blob/master/Document/grpc.md)
+  - [proto 生成 go code](https://github.com/jasonLuFa/simplebank/blob/master/Document/proto.md)
+- DevOps
+  - [Github Action](https://github.com/jasonLuFa/simplebank/blob/master/Document/Github-Action.md)
+  - [Dockerfile](https://github.com/jasonLuFa/simplebank/blob/master/Document/Dockerfile.md)
+  - [Docker compose](https://github.com/jasonLuFa/simplebank/blob/master/Document/Docker-compose.md)
+- Other
+  - [Makefile](https://github.com/jasonLuFa/simplebank/blob/master/Document/Makefile.md)
+  - [PASETO vs JWT](https://github.com/jasonLuFa/simplebank/blob/master/Document/PASETO-VS-JWT.md)
 
 ## :world_map: Design outline
 ![ERD](https://github.com/jasonLuFa/simplebank/blob/master/simlebank_dbdiagram.png)
