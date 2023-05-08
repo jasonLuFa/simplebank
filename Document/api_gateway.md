@@ -1,0 +1,11 @@
+# intro
+- plugin of protobuf compiler
+- 從 protobuf  建立 proxy code 
+- 讓我們可以使用 http API，而後端藉由 API gateway 將其轉成 grpc
+- 可以轉換 HTTP JSON 到 grpc，有以下兩種方式
+	- In-prograss translation: only for unary( 只能傳送單一 request & response )
+		- .proto 文件提供額外的註釋，以描述 HTTP JSON 的映射。
+		- grpc-gateway 的工作原理是將 HTTP JSON 請求轉換為 gRPC 請求，然後直接調用 gRPC 處理程序（handler）。這種方式的好處是可以重用現有的 gRPC 處理程序，無需編寫額外的轉換代碼。
+	- Seperate proxy server: both unary and streaming
+		- 使用獨立的代理服務器來實現 HTTP JSON 和 gRPC 之間的轉換
+- 更多資訊參考 : [grpc-gateway  github](https://github.com/grpc-ecosystem/grpc-gateway)
