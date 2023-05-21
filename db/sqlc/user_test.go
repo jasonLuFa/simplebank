@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"testing"
 	"time"
 
@@ -11,13 +12,13 @@ import (
 
 func createRandomUser(t *testing.T) User {
 	hashedPassword, err := util.HashPassword(util.RandomString(6))
-	require.NoError(t,err)
-	
+	require.NoError(t, err)
+
 	arg := CreateUserParams{
-		Username:    util.RandomOwner(),
-		HashedPassword:  hashedPassword,
-		FullName: util.RandomOwner(),
-		Email: util.RandomEmail(),
+		Username:       util.RandomOwner(),
+		HashedPassword: hashedPassword,
+		FullName:       util.RandomOwner(),
+		Email:          util.RandomEmail(),
 	}
 
 	user, err := testQueries.CreateUser(context.Background(), arg)
@@ -26,8 +27,8 @@ func createRandomUser(t *testing.T) User {
 
 	require.Equal(t, arg.Username, user.Username)
 	require.Equal(t, arg.HashedPassword, user.HashedPassword)
-	require.Equal(t, arg.FullName,user.FullName)
-	require.Equal(t, arg.Email,user.Email)
+	require.Equal(t, arg.FullName, user.FullName)
+	require.Equal(t, arg.Email, user.Email)
 
 	require.True(t, user.PasswordChangedAt.IsZero())
 	require.NotZero(t, user.CreatedAt)
@@ -50,5 +51,24 @@ func TestGetUser(t *testing.T) {
 	require.Equal(t, userCreating.Email, userGetting.Email)
 	require.WithinDuration(t, userCreating.PasswordChangedAt, userGetting.PasswordChangedAt, time.Second)
 	require.WithinDuration(t, userCreating.CreatedAt, userGetting.CreatedAt, time.Second)
+
+}
+
+func TestUpdateUserOnlyFullName(t *testing.T) {
+	oldUser := createRandomUser(t)
+
+	newFullName := util.RandomOwner()
+	updatedUser, err := testQueries.UpdateUser(context.Background(), UpdateUserParams{
+		Username: oldUser.Username,
+		FullName: sql.NullString{
+			String: newFullName,
+			Valid:  true,
+		},
+	})
+	require.NoError(t, err)
+	require.NotEqual(t, oldUser.FullName, updatedUser.FullName)
+	require.Equal(t, newFullName, updatedUser.FullName)
+	require.Equal(t, oldUser.Email, updatedUser.Email)
+	require.Equal(t, oldUser.HashedPassword, updatedUser.HashedPassword)
 
 }
