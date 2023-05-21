@@ -35,7 +35,7 @@ func ValidateFullName(value string) error {
 	}
 
 	if !isValidFullName(value) {
-		return fmt.Errorf("invalid username, must contain only letters, numbers or sapces")
+		return fmt.Errorf("invalid username, must contain only letters or sapces")
 	}
 	return nil
 }
