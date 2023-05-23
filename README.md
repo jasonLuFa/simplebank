@@ -8,6 +8,7 @@
   - [goMock](https://github.com/golang/mock) to test API with CRUD
   - [validator](https://github.com/go-playground/validator) to custom the validation to request data
   - [strechter/testify](https://github.com/stretchr/testify) to write a unit test
+  - [zerolog](https://github.com/rs/zerolog) to log the server information
 
 ## 📋 Content
 
