@@ -2,6 +2,7 @@
 ## Gomock
 - [document](https://github.com/golang/mock)
 	- `go install github.com/golang/mock/mockgen@v1.6.0` ( Go 1.16+ )
+	- 如果上面指令無法，嘗試使用 `go get github.com/golang/mock@v1.6.0` 
 	- `which mockgen` ( 確認安裝成功 )
 - 優點
 	- 獨立測試 ( 獨立測試資料和實際資料，避免衝突 )
